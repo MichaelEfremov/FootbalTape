@@ -1,6 +1,7 @@
 package android.mike.ru.footbaltape;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,12 +22,16 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Content> mContents;
+    private ViewListener mViewListener;
 
     public DataAdapter(Context context, List<Content> contents) {
         mContext = context;
         mContents = contents;
     }
 
+    public ViewListener setViewListener(ViewListener viewListener){
+        return this.mViewListener = viewListener;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
@@ -36,7 +41,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        holder.tvTitle.setText(mContents.get(position).getTitle());
     }
 
     @Override
@@ -52,6 +57,12 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             super(item);
             tvTitle = (TextView)item.findViewById(R.id.tvTitle);
             cvItem = (CardView)item.findViewById(R.id.cvItem);
+            cvItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewListener.onClick(getLayoutPosition());
+                }
+            });
         }
     }
 }

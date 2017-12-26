@@ -16,11 +16,11 @@ public class Content {
         this.url = url;
     }
 
-    public String getName() {
+    public String getTitle() {
         return title;
     }
 
-    public void setName(String name) {
+    public void setTitle(String name) {
         this.title = name;
     }
 
