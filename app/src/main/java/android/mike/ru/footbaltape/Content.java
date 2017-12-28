@@ -1,10 +1,14 @@
 package android.mike.ru.footbaltape;
 
+import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Michael on 26.12.2017.
  */
 
-public class Content {
+public class Content implements Parcelable {
 
     private String title;
     private String description;
@@ -14,6 +18,12 @@ public class Content {
         this.title = title;
         this.description = description;
         this.url = url;
+    }
+
+    public Content (Parcel parcel){
+        this.title = parcel.readString();
+        this.description = parcel.readString();
+        this.url = parcel.readString();
     }
 
     public String getTitle() {
@@ -39,5 +49,30 @@ public class Content {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(description);
+        parcel.writeString(url);
+    }
+
+
+    public static final Parcelable.Creator<Content> CREATOR = new Creator<Content>() {
+        @Override
+        public Content createFromParcel(Parcel parcel) {
+            return new Content(parcel);
+        }
+
+        @Override
+        public Content[] newArray(int i) {
+            return new Content[i];
+        }
+    };
 }
 

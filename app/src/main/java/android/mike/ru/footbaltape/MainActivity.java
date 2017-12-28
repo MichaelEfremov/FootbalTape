@@ -21,16 +21,26 @@ public class MainActivity extends AppCompatActivity {
     private final String URL = "https://www.sport-express.ru/football/news/";
     private RecyclerView mRecyclerView;
     private ArrayList<Content> contents = new ArrayList<>();
+    DataAdapter dataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new Fetcher().execute();
         mRecyclerView = (RecyclerView) findViewById(R.id.rvContent);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        dataAdapter = new DataAdapter(MainActivity.this, contents);
+        mRecyclerView.setAdapter(dataAdapter);
+        dataAdapter.setViewListener(new ViewListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(MainActivity.this, ContentActivity.class);
+                intent.putExtra("description", contents.get(position));
+                startActivity(intent);
+            }
+        });
 
+        new Fetcher().execute();
 
     }
 
@@ -40,16 +50,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(ArrayList<Content>[] values) {
             super.onProgressUpdate(values);
-            DataAdapter dataAdapter = new DataAdapter(MainActivity.this, contents);
-            mRecyclerView.setAdapter(dataAdapter);
-            dataAdapter.setViewListener(new ViewListener() {
-                @Override
-                public void onClick(int position) {
-                    Intent intent = new Intent(MainActivity.this, ContentActivity.class);
-                    intent.putExtra("description", contents.get(position).getDescription());
-                    startActivity(intent);
-                }
-            });
+            dataAdapter.notifyDataSetChanged();
         }
 
         @Override
@@ -58,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 Document document = Jsoup.connect(URL).get();
                 Elements elements = document.select(".fs_20.mb_10.block.black");
                 for (Element element : elements) {
-                    contents.add(new Content(element.text(), getDescription(element.absUrl("href")), element.absUrl("href")));
+                    contents.add(new Content(element.text(), "", element.absUrl("href")));
                     publishProgress(contents);
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
