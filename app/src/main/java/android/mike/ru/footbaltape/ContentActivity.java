@@ -3,20 +3,12 @@ package android.mike.ru.footbaltape;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -27,7 +19,7 @@ public class ContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-        tvDescription = (TextView)findViewById(R.id.tvDescription);
+        tvDescription = (TextView) findViewById(R.id.tvDescription);
 
         Intent intent = getIntent();
         content = intent.getParcelableExtra("description");
@@ -38,7 +30,6 @@ public class ContentActivity extends AppCompatActivity {
 
     public class Fetcher extends AsyncTask<Void, Void, Void> {
 
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -46,7 +37,7 @@ public class ContentActivity extends AppCompatActivity {
 
         }
 
-        private String getDescription(String url) {
+        private void getDescription(String url) {
             String description = "";
             try {
                 Document document = Jsoup.connect(url).get();
@@ -56,7 +47,6 @@ public class ContentActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return description;
         }
 
         @Override

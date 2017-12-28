@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class Fetcher extends AsyncTask<Void, ArrayList<Content>, ArrayList<Content>> {
-
 
         @Override
         protected void onProgressUpdate(ArrayList<Content>[] values) {
