@@ -69,17 +69,6 @@ public class MainActivity extends AppCompatActivity {
             return contents;
         }
 
-        private String getDescription(String url) {
-            String description = "";
-            try {
-                Document document = Jsoup.connect(url).get();
-                Element element = document.selectFirst(".article_text.publication.blackcolor.mt_30.mb_15.js-mediator-article");
-                description = element.text();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return description;
-        }
     }
 
 }
